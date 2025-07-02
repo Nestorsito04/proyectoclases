@@ -26,3 +26,23 @@ public:
     }
     string tipo() const override { return "Libro"; }
 };
+
+class Revista : public Publicacion {
+    int edicion;
+public:
+    Revista(string t, int a, int e) : Publicacion(move(t), a), edicion(e) {}
+    void mostrar() const override {
+        cout << "[Revista] \"" << titulo << "\" - Ano: " << ano << ", Edicion: " << edicion << '\n';
+    }
+    string tipo() const override { return "Revista"; }
+};
+
+class Periodico : public Publicacion {
+    string fecha;
+public:
+    Periodico(string t, int a, string f) : Publicacion(move(t), a), fecha(move(f)) {}
+    void mostrar() const override {
+        cout << "[Periodico] \"" << titulo << "\" - Ano: " << ano << ", Fecha: " << fecha << '\n';
+    }
+    string tipo() const override { return "Periodico"; }
+};
