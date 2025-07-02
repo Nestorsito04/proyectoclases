@@ -46,3 +46,32 @@ public:
     }
     string tipo() const override { return "Periodico"; }
 };
+
+bool validarAno(int ano) {
+    return ano >= 1500 && ano <= 2025;
+}
+
+void limpiarBuffer() {
+    while (cin.get() != '\n');
+}
+
+string leerTexto(const string& texto) {
+    string input;
+    do {
+        cout << texto;
+        getline(cin, input);
+    } while (input.empty());
+    return input;
+}
+
+int leerEntero(const string& texto, int min = 1) {
+    int valor;
+    do {
+        cout << texto;
+        cin >> valor;
+        limpiarBuffer();
+    } while (valor < min);
+    return valor;
+}
+
+void agregarPublicacion()
