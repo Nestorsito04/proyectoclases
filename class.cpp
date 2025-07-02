@@ -16,3 +16,13 @@ public:
     string getTitulo() const { return titulo; }
     int getAno() const { return ano; }
 };
+
+class Libro : public Publicacion {
+    int paginas;
+public:
+    Libro(string t, int a, int p) : Publicacion(move(t), a), paginas(p) {}
+    void mostrar() const override {
+        cout << "[Libro] \"" << titulo << "\" - Ano: " << ano << ", Paginas: " << paginas << '\n';
+    }
+    string tipo() const override { return "Libro"; }
+};
