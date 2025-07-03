@@ -111,3 +111,31 @@ void agregarPublicacion(Publicacion**& catalogo, int& tamano) {
     catalogo = nuevoCatalogo;
     ++tamano;
 }
+
+void mostrarCatalogo(Publicacion** catalogo, int tamano) {
+    if (tamano == 0) {
+        cout << "No hay publicaciones registradas.\n";
+        return;
+    }
+    for (int i = 0; i < tamano; ++i) {
+        cout << i + 1 << ". ";
+        catalogo[i]->mostrar();
+    }
+}
+
+void buscarTitulo(Publicacion** catalogo, int tamano) {
+    string clave = leerTexto("Buscar titulo: ");
+    transform(clave.begin(), clave.end(), clave.begin(), ::tolower);
+    bool encontrado = false;
+    for (int i = 0; i < tamano; ++i) {
+        string t = catalogo[i]->getTitulo();
+        string t_lower = t;
+        transform(t_lower.begin(), t_lower.end(), t_lower.begin(), ::tolower);
+        if (t_lower.find(clave) != string::npos) {
+            catalogo[i]->mostrar();
+            encontrado = true;
+        }
+    }
+    if (!encontrado) cout << "No se encontraron coincidencias.\n";
+}
+
