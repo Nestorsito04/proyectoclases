@@ -1,6 +1,8 @@
 #include <iostream>
-#include <iostream>
 #include <algorithm>
+#include <string>
+#include <cctype>
+#include <cstring>
 
 using namespace std;
 
@@ -47,6 +49,11 @@ public:
     string tipo() const override { return "Periodico"; }
 };
 
+void minusculas(char* cadena) {
+    for (char* p = cadena; *p; p++)
+        *p = tolower(*p);
+}
+
 bool validarAno(int ano) {
     return ano >= 1500 && ano <= 2025;
 }
@@ -76,9 +83,14 @@ int leerEntero(const string& texto, int min = 1) {
 
 void agregarPublicacion(Publicacion**& catalogo, int& tamano) {
     int opcion;
-    cout << "\nTipo de publicacion:\n1. Libro\n2. Revista\n3. Periodico\n> ";
+    cout << "\nTipo de publicacion:\n1. Libro\n2. Revista\n3. Periodico\n4. Volver al menu principal\n> "; 
     cin >> opcion;
     limpiarBuffer();
+
+    if (opcion == 4) {
+        cout << "Volviendo al menu principal...\n";
+        return;
+    }
 
     string titulo = leerTexto("Titulo: ");
     int ano = leerEntero("Ano de publicacion: ", 1500);
@@ -125,12 +137,21 @@ void mostrarCatalogo(Publicacion** catalogo, int tamano) {
 
 void buscarTitulo(Publicacion** catalogo, int tamano) {
     string clave = leerTexto("Buscar titulo: ");
-    transform(clave.begin(), clave.end(), clave.begin(), ::tolower);
+    char* clave_cstr = new char[clave.length() + 1];
+    strcpy(clave_cstr, clave.c_str());
+    minusculas(clave_cstr);
+    clave = clave_cstr;
+    delete[] clave_cstr;
+
     bool encontrado = false;
     for (int i = 0; i < tamano; ++i) {
         string t = catalogo[i]->getTitulo();
-        string t_lower = t;
-        transform(t_lower.begin(), t_lower.end(), t_lower.begin(), ::tolower);
+        char* t_cstr = new char[t.length() + 1];
+        strcpy(t_cstr, t.c_str());
+        minusculas(t_cstr);
+        string t_lower = t_cstr;
+        delete[] t_cstr;
+
         if (t_lower.find(clave) != string::npos) {
             catalogo[i]->mostrar();
             encontrado = true;
