@@ -139,3 +139,28 @@ void buscarTitulo(Publicacion** catalogo, int tamano) {
     if (!encontrado) cout << "No se encontraron coincidencias.\n";
 }
 
+void eliminarPublicacion(Publicacion**& catalogo, int& tamano) {
+    mostrarCatalogo(catalogo, tamano);
+    if (tamano == 0) return;
+    int indice = leerEntero("Seleccione numero a eliminar: ") - 1;
+    if (indice < 0 || indice >= tamano) {
+        cout << "Indice invalido.\n";
+        return;
+    }
+
+    delete catalogo[indice];
+    for (int i = indice; i < tamano - 1; ++i)
+        catalogo[i] = catalogo[i + 1];
+
+    Publicacion** nuevoCatalogo = new Publicacion*[tamano - 1];
+    for (int i = 0; i < tamano - 1; ++i)
+        nuevoCatalogo[i] = catalogo[i];
+
+    delete[] catalogo;
+    catalogo = nuevoCatalogo;
+    --tamano;
+
+    cout << "Publicacion eliminada.\n";
+}
+
+void mostrarEstadisticas()
