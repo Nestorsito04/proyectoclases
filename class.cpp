@@ -74,4 +74,40 @@ int leerEntero(const string& texto, int min = 1) {
     return valor;
 }
 
-void agregarPublicacion()
+void agregarPublicacion(Publicacion**& catalogo, int& tamano) {
+    int opcion;
+    cout << "\nTipo de publicacion:\n1. Libro\n2. Revista\n3. Periodico\n> ";
+    cin >> opcion;
+    limpiarBuffer();
+
+    string titulo = leerTexto("Titulo: ");
+    int ano = leerEntero("Ano de publicacion: ", 1500);
+    if (!validarAno(ano)) {
+        cout << "Ano fuera de rango.\n";
+        return;
+    }
+
+    Publicacion* nueva = nullptr;
+    if (opcion == 1) {
+        int paginas = leerEntero("Numero de paginas: ");
+        nueva = new Libro(titulo, ano, paginas);
+    } else if (opcion == 2) {
+        int edicion = leerEntero("Numero de edicion: ");
+        nueva = new Revista(titulo, ano, edicion);
+    } else if (opcion == 3) {
+        string fecha = leerTexto("Fecha de publicacion: ");
+        nueva = new Periodico(titulo, ano, fecha);
+    } else {
+        cout << "Opcion invalida.\n";
+        return;
+    }
+
+    Publicacion** nuevoCatalogo = new Publicacion*[tamano + 1];
+    for (int i = 0; i < tamano; ++i)
+        nuevoCatalogo[i] = catalogo[i];
+    nuevoCatalogo[tamano] = nueva;
+
+    delete[] catalogo;
+    catalogo = nuevoCatalogo;
+    ++tamano;
+}
