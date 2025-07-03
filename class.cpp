@@ -163,4 +163,57 @@ void eliminarPublicacion(Publicacion**& catalogo, int& tamano) {
     cout << "Publicacion eliminada.\n";
 }
 
-void mostrarEstadisticas()
+void mostrarEstadisticas(Publicacion** catalogo, int tamano) {
+    int libros = 0, revistas = 0, periodicos = 0;
+    int minAno = 9999, maxAno = 0;
+
+    for (int i = 0; i < tamano; ++i) {
+        string tipo = catalogo[i]->tipo();
+        if (tipo == "Libro") ++libros;
+        else if (tipo == "Revista") ++revistas;
+        else if (tipo == "Periodico") ++periodicos;
+
+        int a = catalogo[i]->getAno();
+        if (a < minAno) minAno = a;
+        if (a > maxAno) maxAno = a;
+    }
+
+    cout << "\nEstadisticas:\n";
+    cout << "Total: " << tamano << "\n";
+    cout << "Libros: " << libros << ", Revistas: " << revistas << ", Periodicos: " << periodicos << '\n';
+    if (tamano > 0)
+        cout << "Ano mas antiguo: " << minAno << ", mas reciente: " << maxAno << '\n';
+}
+
+void liberarMemoria(Publicacion**& catalogo, int& tamano) {
+    for (int i = 0; i < tamano; ++i)
+        delete catalogo[i];
+    delete[] catalogo;
+    catalogo = nullptr;
+    tamano = 0;
+}
+
+int main() {
+    Publicacion** catalogo = nullptr;
+    int tamano = 0;
+    int opcion;
+
+    do {
+        cout << "MENU PRINCIPAL";
+        cout << "\n1. Agregar publicacion\n2. Mostrar publicaciones\n3. Buscar por titulo\n4. Eliminar publicacion\n5. Estadisticas\n6. Salir\n> ";
+        cin >> opcion;
+        limpiarBuffer();
+
+        switch (opcion) {
+            case 1: agregarPublicacion(catalogo, tamano); break;
+            case 2: mostrarCatalogo(catalogo, tamano); break;
+            case 3: buscarTitulo(catalogo, tamano); break;
+            case 4: eliminarPublicacion(catalogo, tamano); break;
+            case 5: mostrarEstadisticas(catalogo, tamano); break;
+            case 6: liberarMemoria(catalogo, tamano); cout << "Saliendo...\n"; break;
+            default: cout << "Opcion invalida.\n"; break;
+        }
+    } while (opcion != 6);
+
+    return 0;
+}
